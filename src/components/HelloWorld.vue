@@ -1,32 +1,33 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    
+    <div class="table-responsive">
+      <table class="table table-hover-cells table-bordered table-striped">
+        <thead>
+          <tr class="table-primary">
+            <th scope="col">{{ getMonth() }} {{ getYear() }}</th>
+            <td v-for="day in getDaysInCurrentMonth()" :key="day.id">{{ day }}</td>
+          </tr>
+          <tr class="table-warning">
+            <th scope="col">#</th>
+            <td v-for="weekday in weekdaysForTheMonth()" :key="weekday.id">{{ weekdays[weekday] }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Student 1</th>
+            <td v-for="day in getDaysInCurrentMonth()" :key="day.id"></td>
+          </tr>
+          <tr>
+            <th scope="row">Student 2</th>
+            <td v-for="day in getDaysInCurrentMonth()" :key="day.id"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+
   </div>
 </template>
 
@@ -35,6 +36,55 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data: function() {
+    return {
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    }
+  },
+  methods: {
+    getYear: function() {
+      let date = new Date();
+      return date.getFullYear();
+    },
+    getDaysInCurrentMonth: function() {
+      let now = new Date();
+      return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    },
+    getMonth: function() {
+      let month = new Date().getMonth();
+      return this.months[month];
+    },
+    getWeekDay: function() {
+      let day = new Date().getDay();
+      return this.weekdays[day];
+    },
+    weekdayOfTheStartOfTheMonth: function() {
+      let today = new Date();
+      let start = today.getDate();
+      let weekday = today.getDay();
+      for(let i = start; i > 1; i--) {
+        weekday--;
+        if(weekday === -1) {
+          weekday = 6;
+        } 
+      }
+      return weekday;
+    },
+    weekdaysForTheMonth: function() {
+      let start = this.weekdayOfTheStartOfTheMonth();
+      let days = this.getDaysInCurrentMonth();
+      let month = []; // weekdays for the current month
+      for(let i = 0; i < days; i++) {
+        if(start > 6) {
+          start = 0;
+        }
+        month.push(start);
+        start++;
+      }
+      return month;
+    }
   }
 }
 </script>
@@ -54,5 +104,20 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.table-hover-cells > tbody > tr > th:hover,
+.table-hover-cells > tbody > tr > td:hover {
+  background-color: #f5f5f5;
+}
+
+.table-hover-cells > tbody > tr > th.active:hover,
+.table-hover-cells > tbody > tr > td.active:hover,
+.table-hover-cells > tbody > tr.active > th:hover,
+.table-hover-cells > tbody > tr.active > td:hover {
+  background-color: #e8e8e8;
+}
+thead {
+  font-weight: bold;
 }
 </style>
