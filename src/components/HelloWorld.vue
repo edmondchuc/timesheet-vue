@@ -7,22 +7,11 @@
         <thead>
           <tr class="table-primary">
             <th scope="col">{{ getMonth() }} {{ getYear() }}</th>
-            <td v-for="day in getDaysInCurrentMonth()" :key="day.id">{{ day }}</td>
-          </tr>
-          <tr class="table-warning">
-            <th scope="col">#</th>
-            <td v-for="weekday in weekdaysForTheMonth()" :key="weekday.id">{{ weekdays[weekday] }}</td>
+            <td v-for="(day, index) in weekdaysForTheMonth()" :key="day.id">{{ index + 1 }}<br>{{ weekdays[day] }}</td>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">Student 1</th>
-            <td v-for="day in getDaysInCurrentMonth()" :key="day.id"></td>
-          </tr>
-          <tr>
-            <th scope="row">Student 2</th>
-            <td v-for="day in getDaysInCurrentMonth()" :key="day.id"></td>
-          </tr>
+          <div is="AppRow" studentName='Student One' v-bind:monthData='test'></div>
         </tbody>
       </table>
     </div>
@@ -32,15 +21,21 @@
 </template>
 
 <script>
+import AppRow from './app-row.vue'
+
 export default {
   name: 'HelloWorld',
+  components: {
+    AppRow
+  },
   props: {
     msg: String
   },
   data: function() {
     return {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      test: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
   },
   methods: {
@@ -84,6 +79,18 @@ export default {
         start++;
       }
       return month;
+    },
+    getDateRow: function() {
+      let weekday = this.weekdaysForTheMonth();
+      let date = this.weekdayOfTheStartOfTheMonth();
+      let day = [] // row of days in the month
+      for(let i = 0; i < weekday.length; i++) {
+        day.push({
+          weekday: weekday[i],
+          date: date[i]
+        })
+      }
+      return day;
     }
   }
 }
