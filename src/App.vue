@@ -1,29 +1,42 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Timesheet Application"/>
+    <!-- <HelloWorld msg="Timesheet Application"/> -->
+
+    <!-- <router-link to="/">Home</router-link>
+    <router-link to="/app">App</router-link> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Timesheet from './components/Timesheet.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Timesheet
+  },
+
+  methods: {
+    logOut: function() {
+      localStorage.clear();
+    }
   }
 }
 </script>
 
 <style>
-  @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   margin-top: 60px;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 </style>
