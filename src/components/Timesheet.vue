@@ -91,6 +91,7 @@ export default {
       axios.get('http://localhost:5000/user/client', {headers: {Authorization: `Bearer ${localStorage.getItem('jwt')}`}})
       .then(response => {
         this.clients = response.data;
+        console.log(this.clients);
       })
       .catch(error => {
         console.log(error);
@@ -111,7 +112,7 @@ export default {
         console.log(response.data);
 
         // TODO: Add the response to the array instead.
-        this.clients.push({name: response.data.name, row: response.data.row});
+        this.clients.push({'name': response.data.name, 'row': response.data.row});
         // console.log(this.clients);
       })
       .catch(error => {
